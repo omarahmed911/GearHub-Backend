@@ -1,0 +1,49 @@
+ Brief Project Description
+The Auto Parts Marketplace System (GearHub) is a simple web-based platform that connects auto parts
+sellers (traders) with customers (buyers). Traders can add and manage their spare parts
+listings, while customers can search for products, view details, and place orders. The goal of
+this MVP version is to deliver the core business functions with a simple and practical system
+that can be developed within a short time using Java Spring Boot, Restful api and MySQL.
+
+Functional Requirements
+For Traders (Sellers)
+● User registration and login
+● Add new spare parts listings
+● Edit product details
+● Delete products
+● View all their listed products
+● Update product stock quantity
+● View customer orders
+● Update order status (Pending, Processing, Delivered)
+For Customers (Buyers)
+● User registration and login
+● Search for products by name or category
+● View product details
+● Add products to cart
+● Remove products from cart
+● Place orders
+● View order history
+● Track order status
+For Admin
+● View all users
+● View all products
+● Remove inappropriate products if needed
+For System
+● Login and logout
+● Basic authentication and authorization
+● Simple notification message for order status updates
+● Simulated payment process (Cash on Delivery only)
+
+ User Stories
+User Story 1
+As a trader, I want to add new spare parts so that customers can buy them.
+User Story 2
+As a customer, I want to search for products so that I can quickly find the spare parts I need.
+User Story 3
+As a customer, I want to add products to my cart so that I can purchase multiple items
+together.
+User Story 4
+As a customer, I want to place an order and track its status so that I know when I will receive
+my order.
+User Story 5
+As a trader, I want to update order status so that customers stay informed.
