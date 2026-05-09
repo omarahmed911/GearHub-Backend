@@ -9,8 +9,17 @@ import java.util.Map;
 public class HealthController {
 
     @GetMapping("/")
-    public Map<String, String> healthCheck() {
+    public Map<String, String> rootHealth() {
         return Map.of("status", "UP", "message", "Application is running");
     }
-}
 
+    /**
+     * JSON health for frontends and gateways (also see {@code /actuator/health}).
+     */
+    @GetMapping("/api/health")
+    public Map<String, String> apiHealth() {
+        return Map.of(
+                "status", "UP",
+                "checks", "/actuator/health");
+    }
+}
