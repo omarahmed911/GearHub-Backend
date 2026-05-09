@@ -12,38 +12,69 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-@RestControllerAdvice(basePackages = "gearhub.website.gearhub")
+@RestControllerAdvice(basePackages = "gearhub.website.gearhub.controller")
 public class GlobalResponseAdvice implements ResponseBodyAdvice<Object> {
 
     @Override
-    public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
+    public boolean supports(MethodParameter returnType,
+                            Class<? extends HttpMessageConverter<?>> converterType) {
         return true;
     }
 
     @Override
-    public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType,
+    public Object beforeBodyWrite(Object body,
+                                  MethodParameter returnType,
+                                  MediaType selectedContentType,
                                   Class<? extends HttpMessageConverter<?>> selectedConverterType,
-                                  ServerHttpRequest request, ServerHttpResponse response) {
-                                      
+                                  ServerHttpRequest request,
+                                  ServerHttpResponse response) {
+
         String path = request.getURI().getPath();
-        
-        // Exclude the health endpoint (/) and error endpoint so we don't wrap them twice
-        if (path.equals("/") || path.startsWith("/error") || path.startsWith("/v3/api-docs") || path.startsWith("/swagger-ui")) {
+
+        // ❌ تجاهل endpoints المهمة (Spring Security / Swagger / error)
+        if (path.startsWith("/error")
+                || path.equals("/")
+                || path.startsWith("/api/health")
+                || path.startsWith("/api/auth")
+                || path.startsWith("/v3/api-docs")
+                || path.startsWith("/swagger")
+                || path.startsWith("/actuator")) {
             return body;
         }
 
-        // Avoid wrapping if it's already wrapped implicitly or explicitly
-        if (body instanceof Map && ((Map<?, ?>) body).containsKey("data")) {
+        // ❌ لو already wrapped
+        if (body instanceof Map<?, ?> map && map.containsKey("data")) {
             return body;
         }
 
-        if (body instanceof List) {
-            return Map.of("data", body);
-        } else if (body != null) {
-            return Map.of("data", List.of(body));
-        } else {
-            return Map.of("data", Collections.emptyList());
+        // ❌ لو List
+        if (body instanceof List<?>) {
+            return Map.of(
+                    "data", body,
+                    "success", true
+            );
         }
+
+        // ❌ لو String (مهم جدًا لحل مشكلتك)
+        if (body instanceof String) {
+            return Map.of(
+                    "data", body,
+                    "success", true
+            );
+        }
+
+        // ❌ null response
+        if (body == null) {
+            return Map.of(
+                    "data", Collections.emptyList(),
+                    "success", true
+            );
+        }
+
+        // ✅ أي Object عادي
+        return Map.of(
+                "data", body,
+                "success", true
+        );
     }
 }
-

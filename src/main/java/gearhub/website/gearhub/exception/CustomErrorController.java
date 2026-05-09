@@ -1,14 +1,11 @@
 package gearhub.website.gearhub.exception;
 
-import org.springframework.boot.webmvc.error.ErrorController;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.Collections;
 import java.util.Map;
 import java.util.List;
 
@@ -21,7 +18,7 @@ public class CustomErrorController implements ErrorController {
         Object message = request.getAttribute(RequestDispatcher.ERROR_MESSAGE);
         Object exception = request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
         
-        Integer statusCode = status != null ? Integer.valueOf(status.toString()) : 500;
+        Integer statusCode = status != null ? Integer.parseInt(status.toString()) : 500;
         String errorMessage = "Internal Server Error";
         if (message != null && !message.toString().isBlank()) {
             errorMessage = message.toString();

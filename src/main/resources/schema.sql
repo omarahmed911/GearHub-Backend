@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS orders (
     customer_id INT NOT NULL,
     total_price DECIMAL(10,2) NOT NULL,
     status ENUM('PENDING', 'PROCESSING', 'DELIVERED'),
+    payment_method VARCHAR(32) NOT NULL DEFAULT 'COD',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (customer_id) REFERENCES users(id)
 );
@@ -32,6 +33,16 @@ CREATE TABLE IF NOT EXISTS cart (
     customer_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (customer_id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS cart_items (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    cart_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL,
+    UNIQUE KEY uk_cart_product (cart_id, product_id),
+    FOREIGN KEY (cart_id) REFERENCES cart(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
 CREATE TABLE IF NOT EXISTS order_item (

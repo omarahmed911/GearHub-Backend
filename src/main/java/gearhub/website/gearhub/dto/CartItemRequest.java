@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class OrderItemDto {
+public class CartItemRequest {
     @NotNull
     private Long productId;
 
