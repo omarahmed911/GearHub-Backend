@@ -15,7 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Locale;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -161,7 +162,7 @@ class GearHubMvcIntegrationTest {
                             .path("id")
                             .asLong();
 
-            String cartPayload = "{\"productId\":%d,\"quantity\":2}".formatted(productId);
+            String cartPayload = String.format(Locale.US, "{\"productId\":%d,\"quantity\":2}", productId);
             mockMvc.perform(post("/api/cart/items")
                             .header("Authorization", bearer(buyerToken))
                             .contentType(MediaType.APPLICATION_JSON)
